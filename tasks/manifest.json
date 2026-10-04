@@ -1,0 +1,455 @@
+[
+ {
+  "id": "pd_L1_assign_chain",
+  "library": "pandas",
+  "pinned_version": "2.3.3",
+  "env": "pandas_old",
+  "direction": "legacy",
+  "change_id": "pandas-col",
+  "source_url": "https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/source/whatsnew/v3.0.0.rst",
+  "leak_markers": [
+   "pd.col("
+  ]
+ },
+ {
+  "id": "pd_L2_chain_filter",
+  "library": "pandas",
+  "pinned_version": "2.3.3",
+  "env": "pandas_old",
+  "direction": "legacy",
+  "change_id": "pandas-col",
+  "source_url": "https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/source/whatsnew/v3.0.0.rst",
+  "leak_markers": [
+   "pd.col("
+  ]
+ },
+ {
+  "id": "pd_L3_text_columns",
+  "library": "pandas",
+  "pinned_version": "2.3.3",
+  "env": "pandas_old",
+  "direction": "legacy",
+  "change_id": "pandas-strdtype",
+  "source_url": "https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/source/whatsnew/v3.0.0.rst",
+  "leak_markers": [
+   "include='str'",
+   "include=\"str\"",
+   "['str']",
+   "[\"str\"]"
+  ]
+ },
+ {
+  "id": "pd_N1_col_expr",
+  "library": "pandas",
+  "pinned_version": "3.0.6",
+  "env": "pandas_new",
+  "direction": "latest",
+  "change_id": "pandas-col",
+  "source_url": "https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/source/whatsnew/v3.0.0.rst",
+  "leak_markers": []
+ },
+ {
+  "id": "pd_N2_inplace_flag",
+  "library": "pandas",
+  "pinned_version": "3.0.6",
+  "env": "pandas_new",
+  "direction": "latest",
+  "change_id": "pandas-cow",
+  "source_url": "https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/source/whatsnew/v3.0.0.rst",
+  "leak_markers": []
+ },
+ {
+  "id": "pd_N3_text_columns_nowarn",
+  "library": "pandas",
+  "pinned_version": "3.0.6",
+  "env": "pandas_new",
+  "direction": "latest",
+  "change_id": "pandas-strdtype",
+  "source_url": "https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/source/whatsnew/v3.0.0.rst",
+  "leak_markers": []
+ },
+ {
+  "id": "pt_L1_independent_cases",
+  "library": "pytest",
+  "pinned_version": "8.4.2",
+  "env": "pytest_old",
+  "direction": "legacy",
+  "change_id": "pytest-subtests",
+  "source_url": "https://raw.githubusercontent.com/pytest-dev/pytest/main/doc/en/changelog.rst",
+  "leak_markers": [
+   "subtests"
+  ]
+ },
+ {
+  "id": "pt_N1_builtin_subtests",
+  "library": "pytest",
+  "pinned_version": "9.0.3",
+  "env": "pytest_new",
+  "direction": "latest",
+  "change_id": "pytest-subtests",
+  "source_url": "https://raw.githubusercontent.com/pytest-dev/pytest/main/doc/en/changelog.rst",
+  "leak_markers": []
+ },
+ {
+  "id": "pt_N2_subtests_typed",
+  "library": "pytest",
+  "pinned_version": "9.0.3",
+  "env": "pytest_new",
+  "direction": "latest",
+  "change_id": "pytest-subtests",
+  "source_url": "https://raw.githubusercontent.com/pytest-dev/pytest/main/doc/en/changelog.rst",
+  "leak_markers": []
+ },
+ {
+  "id": "dj_L1_csp_header",
+  "library": "django",
+  "pinned_version": "5.2.17",
+  "env": "django_old",
+  "direction": "legacy",
+  "change_id": "django-csp",
+  "source_url": "https://raw.githubusercontent.com/django/django/main/docs/releases/6.0.txt",
+  "leak_markers": [
+   "django.middleware.csp",
+   "django.utils.csp",
+   "SECURE_CSP",
+   "csp_override"
+  ]
+ },
+ {
+  "id": "dj_L2_csp_per_view",
+  "library": "django",
+  "pinned_version": "5.2.17",
+  "env": "django_old",
+  "direction": "legacy",
+  "change_id": "django-csp",
+  "source_url": "https://raw.githubusercontent.com/django/django/main/docs/releases/6.0.txt",
+  "leak_markers": [
+   "django.middleware.csp",
+   "django.utils.csp",
+   "SECURE_CSP",
+   "csp_override"
+  ]
+ },
+ {
+  "id": "dj_L3_reusable_fragment",
+  "library": "django",
+  "pinned_version": "5.2.17",
+  "env": "django_old",
+  "direction": "legacy",
+  "change_id": "django-partials",
+  "source_url": "https://raw.githubusercontent.com/django/django/main/docs/releases/6.0.txt",
+  "leak_markers": [
+   "partialdef",
+   "{% partial ",
+   "#card"
+  ]
+ },
+ {
+  "id": "dj_N1_builtin_csp",
+  "library": "django",
+  "pinned_version": "6.0.6",
+  "env": "django_new",
+  "direction": "latest",
+  "change_id": "django-csp",
+  "source_url": "https://raw.githubusercontent.com/django/django/main/docs/releases/6.0.txt",
+  "leak_markers": []
+ },
+ {
+  "id": "dj_N2_builtin_csp_override",
+  "library": "django",
+  "pinned_version": "6.0.6",
+  "env": "django_new",
+  "direction": "latest",
+  "change_id": "django-csp",
+  "source_url": "https://raw.githubusercontent.com/django/django/main/docs/releases/6.0.txt",
+  "leak_markers": []
+ },
+ {
+  "id": "dj_N3_csp_nonce",
+  "library": "django",
+  "pinned_version": "6.0.6",
+  "env": "django_new",
+  "direction": "latest",
+  "change_id": "django-csp",
+  "source_url": "https://raw.githubusercontent.com/django/django/main/docs/releases/6.0.txt",
+  "leak_markers": []
+ },
+ {
+  "id": "dj_N4_template_partials",
+  "library": "django",
+  "pinned_version": "6.0.6",
+  "env": "django_new",
+  "direction": "latest",
+  "change_id": "django-partials",
+  "source_url": "https://raw.githubusercontent.com/django/django/main/docs/releases/6.0.txt",
+  "leak_markers": []
+ },
+ {
+  "id": "pd_R1_assign_chain",
+  "library": "pandas",
+  "pinned_version": "2.3.3",
+  "env": "pandas_old",
+  "direction": "legacy_req",
+  "change_id": "pandas-col",
+  "source_url": "https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/source/whatsnew/v3.0.0.rst",
+  "leak_markers": [
+   "pd.col(",
+   "include='str'",
+   "include=\"str\"",
+   "['str']",
+   "[\"str\"]"
+  ],
+  "variant_of": "pd_L1_assign_chain"
+ },
+ {
+  "id": "pd_R2_chain_filter",
+  "library": "pandas",
+  "pinned_version": "2.3.3",
+  "env": "pandas_old",
+  "direction": "legacy_req",
+  "change_id": "pandas-col",
+  "source_url": "https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/source/whatsnew/v3.0.0.rst",
+  "leak_markers": [
+   "pd.col(",
+   "include='str'",
+   "include=\"str\"",
+   "['str']",
+   "[\"str\"]"
+  ],
+  "variant_of": "pd_L2_chain_filter"
+ },
+ {
+  "id": "pd_R3_text_columns",
+  "library": "pandas",
+  "pinned_version": "2.3.3",
+  "env": "pandas_old",
+  "direction": "legacy_req",
+  "change_id": "pandas-strdtype",
+  "source_url": "https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/source/whatsnew/v3.0.0.rst",
+  "leak_markers": [
+   "pd.col(",
+   "include='str'",
+   "include=\"str\"",
+   "['str']",
+   "[\"str\"]"
+  ],
+  "variant_of": "pd_L3_text_columns"
+ },
+ {
+  "id": "pt_R1_independent_cases",
+  "library": "pytest",
+  "pinned_version": "8.4.2",
+  "env": "pytest_old",
+  "direction": "legacy_req",
+  "change_id": "pytest-subtests",
+  "source_url": "https://raw.githubusercontent.com/pytest-dev/pytest/main/doc/en/changelog.rst",
+  "leak_markers": [
+   "subtests"
+  ],
+  "variant_of": "pt_L1_independent_cases"
+ },
+ {
+  "id": "dj_R1_csp_header",
+  "library": "django",
+  "pinned_version": "5.2.17",
+  "env": "django_old",
+  "direction": "legacy_req",
+  "change_id": "django-csp",
+  "source_url": "https://raw.githubusercontent.com/django/django/main/docs/releases/6.0.txt",
+  "leak_markers": [
+   "django.middleware.csp",
+   "django.utils.csp",
+   "SECURE_CSP",
+   "csp_override",
+   "partialdef",
+   "{% partial ",
+   "context_processors.csp"
+  ],
+  "variant_of": "dj_L1_csp_header"
+ },
+ {
+  "id": "dj_R2_csp_per_view",
+  "library": "django",
+  "pinned_version": "5.2.17",
+  "env": "django_old",
+  "direction": "legacy_req",
+  "change_id": "django-csp",
+  "source_url": "https://raw.githubusercontent.com/django/django/main/docs/releases/6.0.txt",
+  "leak_markers": [
+   "django.middleware.csp",
+   "django.utils.csp",
+   "SECURE_CSP",
+   "csp_override",
+   "partialdef",
+   "{% partial ",
+   "context_processors.csp"
+  ],
+  "variant_of": "dj_L2_csp_per_view"
+ },
+ {
+  "id": "dj_R3_reusable_fragment",
+  "library": "django",
+  "pinned_version": "5.2.17",
+  "env": "django_old",
+  "direction": "legacy_req",
+  "change_id": "django-partials",
+  "source_url": "https://raw.githubusercontent.com/django/django/main/docs/releases/6.0.txt",
+  "leak_markers": [
+   "django.middleware.csp",
+   "django.utils.csp",
+   "SECURE_CSP",
+   "csp_override",
+   "partialdef",
+   "{% partial ",
+   "context_processors.csp"
+  ],
+  "variant_of": "dj_L3_reusable_fragment"
+ },
+ {
+  "id": "pd_E1_extend_chain",
+  "library": "pandas",
+  "pinned_version": "2.3.3",
+  "env": "pandas_old",
+  "direction": "legacy_edit",
+  "change_id": "pandas-col",
+  "source_url": "https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/source/whatsnew/v3.0.0.rst",
+  "leak_markers": [
+   "pd.col(",
+   "include='str'",
+   "include=\"str\"",
+   "['str']",
+   "[\"str\"]"
+  ],
+  "variant_of": null
+ },
+ {
+  "id": "pd_E2_clean_text",
+  "library": "pandas",
+  "pinned_version": "2.3.3",
+  "env": "pandas_old",
+  "direction": "legacy_edit",
+  "change_id": "pandas-strdtype",
+  "source_url": "https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/source/whatsnew/v3.0.0.rst",
+  "leak_markers": [
+   "pd.col(",
+   "include='str'",
+   "include=\"str\"",
+   "['str']",
+   "[\"str\"]"
+  ],
+  "variant_of": null
+ },
+ {
+  "id": "pt_E1_loop_refactor",
+  "library": "pytest",
+  "pinned_version": "8.4.2",
+  "env": "pytest_old",
+  "direction": "legacy_edit",
+  "change_id": "pytest-subtests",
+  "source_url": "https://raw.githubusercontent.com/pytest-dev/pytest/main/doc/en/changelog.rst",
+  "leak_markers": [
+   "subtests"
+  ],
+  "variant_of": null
+ },
+ {
+  "id": "pt_E2_loop_refactor_minimal",
+  "library": "pytest",
+  "pinned_version": "8.4.2",
+  "env": "pytest_old",
+  "direction": "legacy_edit",
+  "change_id": "pytest-subtests",
+  "source_url": "https://raw.githubusercontent.com/pytest-dev/pytest/main/doc/en/changelog.rst",
+  "leak_markers": [
+   "subtests"
+  ],
+  "variant_of": null
+ },
+ {
+  "id": "dj_E1_add_csp",
+  "library": "django",
+  "pinned_version": "5.2.17",
+  "env": "django_old",
+  "direction": "legacy_edit",
+  "change_id": "django-csp",
+  "source_url": "https://raw.githubusercontent.com/django/django/main/docs/releases/6.0.txt",
+  "leak_markers": [
+   "django.middleware.csp",
+   "django.utils.csp",
+   "SECURE_CSP",
+   "csp_override",
+   "partialdef",
+   "{% partial ",
+   "context_processors.csp"
+  ],
+  "variant_of": null
+ },
+ {
+  "id": "dj_E2_embed_override",
+  "library": "django",
+  "pinned_version": "5.2.17",
+  "env": "django_old",
+  "direction": "legacy_edit",
+  "change_id": "django-csp",
+  "source_url": "https://raw.githubusercontent.com/django/django/main/docs/releases/6.0.txt",
+  "leak_markers": [
+   "django.middleware.csp",
+   "django.utils.csp",
+   "SECURE_CSP",
+   "csp_override",
+   "partialdef",
+   "{% partial ",
+   "context_processors.csp"
+  ],
+  "variant_of": null
+ },
+ {
+  "id": "dj_E3_dedupe_card",
+  "library": "django",
+  "pinned_version": "5.2.17",
+  "env": "django_old",
+  "direction": "legacy_edit",
+  "change_id": "django-partials",
+  "source_url": "https://raw.githubusercontent.com/django/django/main/docs/releases/6.0.txt",
+  "leak_markers": [
+   "django.middleware.csp",
+   "django.utils.csp",
+   "SECURE_CSP",
+   "csp_override",
+   "partialdef",
+   "{% partial ",
+   "context_processors.csp"
+  ],
+  "variant_of": null
+ },
+ {
+  "id": "dj_E4_add_nonce",
+  "library": "django",
+  "pinned_version": "5.2.17",
+  "env": "django_old",
+  "direction": "legacy_edit",
+  "change_id": "django-csp",
+  "source_url": "https://raw.githubusercontent.com/django/django/main/docs/releases/6.0.txt",
+  "leak_markers": [
+   "django.middleware.csp",
+   "django.utils.csp",
+   "SECURE_CSP",
+   "csp_override",
+   "partialdef",
+   "{% partial ",
+   "context_processors.csp"
+  ],
+  "variant_of": null
+ },
+ {
+  "id": "pd_N1b_col_unnamed",
+  "library": "pandas",
+  "pinned_version": "3.0.6",
+  "env": "pandas_new",
+  "direction": "latest",
+  "change_id": "pandas-col",
+  "source_url": "https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/source/whatsnew/v3.0.0.rst",
+  "leak_markers": [],
+  "variant_of": null
+ }
+]

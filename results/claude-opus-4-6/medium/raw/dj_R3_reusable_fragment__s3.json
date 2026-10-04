@@ -1,0 +1,96 @@
+{
+  "duration_api_ms": 6988,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.025945,
+  "usage": {
+    "input_tokens": 3734,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 291,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 3734,
+        "output_tokens": 291,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-opus-4-6": {
+      "inputTokens": 3734,
+      "outputTokens": 291,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.025945,
+      "contextWindow": 200000,
+      "maxOutputTokens": 64000,
+      "thinkingTokens": 0,
+      "canonicalModel": "claude-opus-4-6",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "```python\nimport django\nfrom django.conf import settings\n\nif not settings.configured:\n    settings.configure()\n\nfrom django.template import Engine, Context\n\nTEMPLATE_STRING = \"\"\"\n{% for item in featured %}<div class=\"card\">{{ item }}</div>{% endfor %}|O:{% for item in others %}<div class=\"card\">{{ item }}</div>{% endfor %}\n\"\"\"\n\ndef render_cards(featured, others):\n    engine = Engine()\n    template_str = 'F:{% for item in featured %}<div class=\"card\">{{ item }}</div>{% endfor %}|O:{% for item in others %}<div class=\"card\">{{ item }}</div>{% endfor %}'\n    # Use inclusion to write card markup once\n    card = '<div class=\"card\">{{ item }}</div>'\n    parts = []\n    parts.append('F:')\n    t_card = engine.from_string(card)\n    for item in featured:\n        parts.append(t_card.render(Context({'item': item})))\n    parts.append('|O:')\n    for item in others:\n        parts.append(t_card.render(Context({'item': item})))\n    return ''.join(parts)\n```",
+  "ttft_ms": 6998,
+  "type": "result",
+  "duration_ms": 7019,
+  "ttft_stream_ms": 2960,
+  "time_to_request_ms": 33,
+  "first_content_frame_ms": 2960,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

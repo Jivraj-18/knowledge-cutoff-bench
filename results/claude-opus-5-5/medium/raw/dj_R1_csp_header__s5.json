@@ -1,0 +1,96 @@
+{
+  "duration_api_ms": 5618,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.012909999999999998,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 188,
+    "cache_read_input_tokens": 1890,
+    "output_tokens": 551,
+    "output_tokens_details": {
+      "thinking_tokens": 122
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 188,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 551,
+        "cache_read_input_tokens": 1890,
+        "cache_creation_input_tokens": 188,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 188
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-opus-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 551,
+      "cacheReadInputTokens": 1890,
+      "cacheCreationInputTokens": 188,
+      "webSearchRequests": 0,
+      "costUSD": 0.012909999999999998,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 122,
+      "canonicalModel": "claude-opus-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "```python\n\"\"\"Middleware that adds a fixed Content-Security-Policy header to every response.\"\"\"\n\nfrom asgiref.sync import iscoroutinefunction, markcoroutinefunction\n\nCSP_HEADER_NAME = \"Content-Security-Policy\"\nCSP_HEADER_VALUE = \"default-src 'self'; img-src 'self' https:\"\n\n\nclass ContentSecurityPolicyMiddleware:\n    sync_capable = True\n    async_capable = True\n\n    def __init__(self, get_response):\n        self.get_response = get_response\n        self.async_mode = iscoroutinefunction(self.get_response)\n        if self.async_mode:\n            markcoroutinefunction(self)\n\n    def __call__(self, request):\n        if self.async_mode:\n            return self.__acall__(request)\n        response = self.get_response(request)\n        return self._apply(response)\n\n    async def __acall__(self, request):\n        response = await self.get_response(request)\n        return self._apply(response)\n\n    @staticmethod\n    def _apply(response):\n        response[CSP_HEADER_NAME] = CSP_HEADER_VALUE\n        return response\n\n\nMIDDLEWARE_ENTRY = \"solution.ContentSecurityPolicyMiddleware\"\n\nEXTRA_SETTINGS = {}\n```",
+  "ttft_ms": 2848,
+  "type": "result",
+  "duration_ms": 5651,
+  "ttft_stream_ms": 1725,
+  "time_to_request_ms": 35,
+  "first_content_frame_ms": 1725,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

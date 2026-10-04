@@ -1,0 +1,14 @@
+envs/
+results_backup/
+tasks_round1_backup/
+__pycache__/
+*.pyc
+.env
+.env.*
+cutoff-bench-tasks.zip
+tasks-round2.zip
+*.zip
+.DS_Store
+/tmp/
+scratchpad/
+CLAUDE.md

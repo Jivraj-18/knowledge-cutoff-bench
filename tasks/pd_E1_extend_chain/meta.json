@@ -1,0 +1,17 @@
+{
+ "id": "pd_E1_extend_chain",
+ "library": "pandas",
+ "pinned_version": "2.3.3",
+ "env": "pandas_old",
+ "direction": "legacy_edit",
+ "change_id": "pandas-col",
+ "source_url": "https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/source/whatsnew/v3.0.0.rst",
+ "leak_markers": [
+  "pd.col(",
+  "include='str'",
+  "include=\"str\"",
+  "['str']",
+  "[\"str\"]"
+ ],
+ "variant_of": null
+}

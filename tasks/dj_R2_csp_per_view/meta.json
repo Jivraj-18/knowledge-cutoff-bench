@@ -1,0 +1,19 @@
+{
+ "id": "dj_R2_csp_per_view",
+ "library": "django",
+ "pinned_version": "5.2.17",
+ "env": "django_old",
+ "direction": "legacy_req",
+ "change_id": "django-csp",
+ "source_url": "https://raw.githubusercontent.com/django/django/main/docs/releases/6.0.txt",
+ "leak_markers": [
+  "django.middleware.csp",
+  "django.utils.csp",
+  "SECURE_CSP",
+  "csp_override",
+  "partialdef",
+  "{% partial ",
+  "context_processors.csp"
+ ],
+ "variant_of": "dj_L2_csp_per_view"
+}

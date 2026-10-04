@@ -1,0 +1,13 @@
+{
+ "id": "pt_E1_loop_refactor",
+ "library": "pytest",
+ "pinned_version": "8.4.2",
+ "env": "pytest_old",
+ "direction": "legacy_edit",
+ "change_id": "pytest-subtests",
+ "source_url": "https://raw.githubusercontent.com/pytest-dev/pytest/main/doc/en/changelog.rst",
+ "leak_markers": [
+  "subtests"
+ ],
+ "variant_of": null
+}

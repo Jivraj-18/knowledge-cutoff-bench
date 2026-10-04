@@ -1,0 +1,96 @@
+{
+  "duration_api_ms": 9859,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.021808600000000004,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 501,
+    "cache_read_input_tokens": 1463,
+    "output_tokens": 875,
+    "output_tokens_details": {
+      "thinking_tokens": 574
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 501,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 875,
+        "cache_read_input_tokens": 1463,
+        "cache_creation_input_tokens": 501,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 501
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-opus-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 875,
+      "cacheReadInputTokens": 1463,
+      "cacheCreationInputTokens": 501,
+      "webSearchRequests": 0,
+      "costUSD": 0.021808600000000004,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 574,
+      "canonicalModel": "claude-opus-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "```python\nimport pandas as pd\nfrom pandas.api.types import infer_dtype, is_object_dtype\n\n\ndef text_columns(df):\n    \"\"\"Return the names of the columns in ``df`` that hold text, in order.\n\n    With default inference in pandas 2.3.3, string columns get ``object``\n    dtype, or the ``str`` dtype if ``future.infer_string`` is enabled.\n    ``object`` columns can also hold non-text values (lists, dicts,\n    Decimals, mixed types), so those candidates are checked to make sure\n    their non-missing values are actually strings.\n    \"\"\"\n    candidates = df.select_dtypes(include=[\"object\", \"string\"])\n    result = []\n    for name in candidates.columns:\n        col = candidates[name]\n        if is_object_dtype(col.dtype):\n            if infer_dtype(col, skipna=True) != \"string\":\n                continue\n        result.append(name)\n    return result\n```",
+  "ttft_ms": 7639,
+  "type": "result",
+  "duration_ms": 9893,
+  "ttft_stream_ms": 1527,
+  "time_to_request_ms": 36,
+  "first_content_frame_ms": 1527,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

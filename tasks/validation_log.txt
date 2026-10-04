@@ -1,0 +1,32 @@
+OK  pd_L1_assign_chain           env=pandas_old  reference_pass=True  wrong_version_pass=False | wrong fails with: AttributeError: module 'pandas' has no attribute 'col'
+OK  pd_L2_chain_filter           env=pandas_old  reference_pass=True  wrong_version_pass=False | wrong fails with: AttributeError: module 'pandas' has no attribute 'col'
+OK  pd_L3_text_columns           env=pandas_old  reference_pass=True  wrong_version_pass=False | wrong fails with: TypeError: numpy string dtypes are not allowed, use 'str' or 'object' instead
+OK  pd_N1_col_expr               env=pandas_new  reference_pass=True  wrong_version_pass=False | wrong fails with: AssertionError: must use pd.col
+OK  pd_N2_inplace_flag           env=pandas_new  reference_pass=True  wrong_version_pass=False | wrong fails with: AssertionError: [False, False, False]
+OK  pd_N3_text_columns_nowarn    env=pandas_new  reference_pass=True  wrong_version_pass=False | wrong fails with: See https://pandas.pydata.org/docs/user_guide/migration-3-strings.html#string-migration-select-dtypes for deta
+OK  pt_L1_independent_cases      env=pytest_old  reference_pass=True  wrong_version_pass=False | wrong fails with: 1 error in 0.00s
+OK  pt_N1_builtin_subtests       env=pytest_new  reference_pass=True  wrong_version_pass=False | wrong fails with: AssertionError: must not use parametrize
+OK  pt_N2_subtests_typed         env=pytest_new  reference_pass=True  wrong_version_pass=False | wrong fails with: 1 error in 0.05s
+OK  dj_L1_csp_header             env=django_old  reference_pass=True  wrong_version_pass=False | wrong fails with: ModuleNotFoundError: No module named 'django.utils.csp'
+OK  dj_L2_csp_per_view           env=django_old  reference_pass=True  wrong_version_pass=False | wrong fails with: ModuleNotFoundError: No module named 'django.utils.csp'
+OK  dj_L3_reusable_fragment      env=django_old  reference_pass=True  wrong_version_pass=False | wrong fails with: django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 1: 'partialdef'. Did you forget to r
+OK  dj_N1_builtin_csp            env=django_new  reference_pass=True  wrong_version_pass=False | wrong fails with: AssertionError: csp.middleware.CSPMiddleware
+OK  dj_N2_builtin_csp_override   env=django_new  reference_pass=True  wrong_version_pass=False | wrong fails with: ModuleNotFoundError: No module named 'csp'
+OK  dj_N3_csp_nonce              env=django_new  reference_pass=True  wrong_version_pass=False | wrong fails with: ModuleNotFoundError: No module named 'csp'
+OK  dj_N4_template_partials      env=django_new  reference_pass=True  wrong_version_pass=False | wrong fails with: AssertionError: must use built-in template partials
+OK  pd_R1_assign_chain           env=pandas_old  reference_pass=True  wrong_version_pass=False | wrong fails with: AttributeError: module 'pandas' has no attribute 'col'
+OK  pd_R2_chain_filter           env=pandas_old  reference_pass=True  wrong_version_pass=False | wrong fails with: AttributeError: module 'pandas' has no attribute 'col'
+OK  pd_R3_text_columns           env=pandas_old  reference_pass=True  wrong_version_pass=False | wrong fails with: TypeError: numpy string dtypes are not allowed, use 'str' or 'object' instead
+OK  pt_R1_independent_cases      env=pytest_old  reference_pass=True  wrong_version_pass=False | wrong fails with: 1 error in 0.00s
+OK  dj_R1_csp_header             env=django_old  reference_pass=True  wrong_version_pass=False | wrong fails with: ModuleNotFoundError: No module named 'django.utils.csp'
+OK  dj_R2_csp_per_view           env=django_old  reference_pass=True  wrong_version_pass=False | wrong fails with: ModuleNotFoundError: No module named 'django.utils.csp'
+OK  dj_R3_reusable_fragment      env=django_old  reference_pass=True  wrong_version_pass=False | wrong fails with: django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 1: 'partialdef'. Did you forget to r
+OK  pd_E1_extend_chain           env=pandas_old  reference_pass=True  wrong_version_pass=False | wrong fails with: AttributeError: module 'pandas' has no attribute 'col'
+OK  pd_E2_clean_text             env=pandas_old  reference_pass=True  wrong_version_pass=False | wrong fails with: TypeError: numpy string dtypes are not allowed, use 'str' or 'object' instead
+OK  pt_E1_loop_refactor          env=pytest_old  reference_pass=True  wrong_version_pass=False | wrong fails with: 1 error in 0.00s
+OK  pt_E2_loop_refactor_minimal  env=pytest_old  reference_pass=True  wrong_version_pass=False | wrong fails with: 1 error in 0.00s
+OK  dj_E1_add_csp                env=django_old  reference_pass=True  wrong_version_pass=False | wrong fails with: ModuleNotFoundError: No module named 'django.utils.csp'
+OK  dj_E2_embed_override         env=django_old  reference_pass=True  wrong_version_pass=False | wrong fails with: ModuleNotFoundError: No module named 'django.utils.csp'
+OK  dj_E3_dedupe_card            env=django_old  reference_pass=True  wrong_version_pass=False | wrong fails with: django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 1: 'partialdef'. Did you forget to r
+OK  dj_E4_add_nonce              env=django_old  reference_pass=True  wrong_version_pass=False | wrong fails with: ModuleNotFoundError: No module named 'django.utils.csp'
+OK  pd_N1b_col_unnamed           env=pandas_new  reference_pass=True  wrong_version_pass=False | wrong fails with: AssertionError: must use pd.col

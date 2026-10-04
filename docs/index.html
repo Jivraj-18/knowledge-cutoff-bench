@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Do newer models get confused by newer APIs?</title>
+<meta name="description" content="A 32-task benchmark on Claude Opus 4.6 vs 5.5 across pandas 3.0, Django 6.0 and pytest 9 breaking changes.">
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #556;
+    --rule: #e3e3ea;
+    --card: #f7f7fa;
+    --code-bg: #f4f4f6;
+    --accent-4: #2e5cff;
+    --accent-5: #10a37f;
+    --warn: #c25a00;
+    --link: #1a4bff;
+  }
+  :root:not([data-theme="light"]) { @media (prefers-color-scheme: dark) {
+    :root { --bg:#0e0f12; --fg:#eceef2; --muted:#9aa3b2; --rule:#242731; --card:#161820; --code-bg:#161820; --accent-4:#6fa0ff; --accent-5:#34d4a9; --warn:#f5a05a; --link:#89b4ff; }
+  }}
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:#0e0f12; --fg:#eceef2; --muted:#9aa3b2; --rule:#242731;
+      --card:#161820; --code-bg:#161820;
+      --accent-4:#6fa0ff; --accent-5:#34d4a9; --warn:#f5a05a; --link:#89b4ff;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:#0e0f12; --fg:#eceef2; --muted:#9aa3b2; --rule:#242731;
+    --card:#161820; --code-bg:#161820;
+    --accent-4:#6fa0ff; --accent-5:#34d4a9; --warn:#f5a05a; --link:#89b4ff;
+  }
+  * { box-sizing: border-box; }
+  html, body { background: var(--bg); color: var(--fg); margin: 0; }
+  body { font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 48px 16px 96px; }
+  h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 .4rem; letter-spacing: -0.01em; }
+  h2 { font-size: 1.25rem; margin: 2.2rem 0 .6rem; letter-spacing: -0.01em; }
+  h3 { font-size: 1.05rem; margin: 1.6rem 0 .4rem; }
+  p, li { color: var(--fg); }
+  .lede { color: var(--muted); margin: 0 0 1.4rem; }
+  a { color: var(--link); }
+  code, pre { font-family: "SF Mono", ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace; font-size: .92em; }
+  pre { background: var(--code-bg); padding: 14px 16px; border-radius: 8px; overflow-x: auto; border: 1px solid var(--rule); }
+  code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+  pre code { background: transparent; padding: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: .95rem; margin: .6rem 0 1rem; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); }
+  th { font-weight: 600; color: var(--muted); }
+  td.num { font-variant-numeric: tabular-nums; }
+  .card { background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 14px 18px; }
+  .meta { color: var(--muted); font-size: .9rem; }
+  .legend { display: flex; gap: 16px; align-items: center; font-size: .9rem; color: var(--muted); margin-bottom: .4rem; flex-wrap: wrap; }
+  .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: -1px; margin-right: 6px; }
+  figure { margin: 1rem 0 1.4rem; }
+  figcaption { color: var(--muted); font-size: .9rem; margin-top: .3rem; }
+  .chart { width: 100%; height: auto; display: block; }
+  .footer { color: var(--muted); font-size: .9rem; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule); }
+  hr { border: none; border-top: 1px solid var(--rule); margin: 2rem 0; }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Do newer models get confused by newer APIs?</h1>
+<p class="lede">A 32-task probe on Claude Opus 4.6 vs 5.5 across pandas 3.0, Django 6.0, and pytest 9 breaking changes. By Jivraj Shekhawat.</p>
+
+<div class="card">
+  <strong>Summary.</strong> Opus 5.5 passed every one of 160 runs; Opus 4.6 passed 126/160. Zero newer-API "leaks" into legacy code for either model in 110 runs each. Opus 4.6 flunked every Django 6.0 task by inventing a plausible settings schema borrowed from a third-party library. On <code>pandas.col</code>, which merged to pandas main the same month as Opus 4.6's stated training cutoff, 4.6 was 5/5 — so the published cutoff didn't predict whether it "knew" the API.
+</div>
+
+<h2>The question</h2>
+<p>Two things we hear a lot about training cutoffs:</p>
+<ol>
+  <li>Older models can't know newer APIs — so an Aug 2025 cutoff should fail on a June 2026 API.</li>
+  <li>Newer models leak the latest APIs into older code — a June 2026 cutoff model, asked to write pandas 2.x code, will reach for pandas 3.0 features it was trained on.</li>
+</ol>
+<p>This benchmark pressure-tests both claims on real breaking changes.</p>
+
+<h2>Setup</h2>
+<p>Both models were called through the Claude Code CLI in headless mode (<code>claude -p</code>, tools disabled, fresh temp dir per call, <code>--effort medium</code>, 5 samples per task × model). The grader extracts the first fenced <code>python</code> block, drops it next to the task's <code>test_task.py</code> in a fresh temp dir, and runs it with the pinned environment's Python. Every task was validated both ways before the run: the reference solution passes, and a solution written for the other version fails.</p>
+
+<table>
+  <thead><tr><th>Direction</th><th>What the task asks</th><th>Tasks</th></tr></thead>
+  <tbody>
+    <tr><td><code>legacy</code></td><td>Solve on the older pinned version; a newer-API answer fails.</td><td class="num">7</td></tr>
+    <tr><td><code>legacy_req</code></td><td>Same, with an explicit "do not use the newer API" instruction.</td><td class="num">7</td></tr>
+    <tr><td><code>legacy_edit</code></td><td>Same, but legacy code is already in the prompt to extend or clean.</td><td class="num">8</td></tr>
+    <tr><td><code>latest</code></td><td>Solve on the newer pinned version; a legacy-only answer fails.</td><td class="num">10</td></tr>
+  </tbody>
+</table>
+<p class="meta">Breaking changes: pandas 2.3.3 → 3.0.6 (<code>pd.col</code>, string dtype default, Copy-on-Write), Django 5.2.17 → 6.0.6 (built-in CSP middleware, template partials), pytest 8.4.2 → 9.0.3 (built-in subtests).</p>
+
+<h2>Results</h2>
+
+<figure>
+  <div class="legend">
+    <span><span class="swatch" style="background:var(--accent-4)"></span>Opus 4.6 (Aug 2025 cutoff)</span>
+    <span><span class="swatch" style="background:var(--accent-5)"></span>Opus 5.5 (Jun 2026 cutoff)</span>
+  </div>
+  <svg class="chart" viewBox="0 0 760 300" role="img" aria-label="Pass rate by direction">
+    <!-- axes -->
+    <line x1="60" y1="30" x2="60" y2="250" stroke="currentColor" stroke-opacity=".25"/>
+    <line x1="60" y1="250" x2="740" y2="250" stroke="currentColor" stroke-opacity=".25"/>
+    <!-- gridlines + y labels -->
+    <g font-size="11" fill="var(--muted)">
+      <text x="52" y="254" text-anchor="end">0%</text>
+      <text x="52" y="199" text-anchor="end">25%</text>
+      <text x="52" y="144" text-anchor="end">50%</text>
+      <text x="52" y="89" text-anchor="end">75%</text>
+      <text x="52" y="34" text-anchor="end">100%</text>
+    </g>
+    <line x1="60" y1="195" x2="740" y2="195" stroke="currentColor" stroke-opacity=".08"/>
+    <line x1="60" y1="140" x2="740" y2="140" stroke="currentColor" stroke-opacity=".08"/>
+    <line x1="60" y1="85"  x2="740" y2="85"  stroke="currentColor" stroke-opacity=".08"/>
+    <line x1="60" y1="30"  x2="740" y2="30"  stroke="currentColor" stroke-opacity=".08"/>
+
+    <!-- Groups: 4 directions, group width 170, each has two bars (4.6, 5.5) -->
+    <!-- Direction centers at x = 145, 315, 485, 655 -->
+    <!-- bars: width 50, bar height = pct*2.2 (100% -> 220) -->
+
+    <!-- legacy: 85.7, 100.0 -->
+    <g><rect x="110" y="60"  width="50" height="188" fill="var(--accent-4)"/><text x="135" y="54" text-anchor="middle" font-size="11" fill="var(--muted)">86%</text></g>
+    <g><rect x="165" y="30"  width="50" height="220" fill="var(--accent-5)"/><text x="190" y="24" text-anchor="middle" font-size="11" fill="var(--muted)">100%</text></g>
+    <text x="162" y="270" text-anchor="middle" font-size="12">legacy</text>
+    <text x="162" y="285" text-anchor="middle" font-size="10" fill="var(--muted)">35 runs</text>
+
+    <!-- legacy_req: 85.7, 100.0 -->
+    <g><rect x="280" y="60"  width="50" height="188" fill="var(--accent-4)"/><text x="305" y="54" text-anchor="middle" font-size="11" fill="var(--muted)">86%</text></g>
+    <g><rect x="335" y="30"  width="50" height="220" fill="var(--accent-5)"/><text x="360" y="24" text-anchor="middle" font-size="11" fill="var(--muted)">100%</text></g>
+    <text x="332" y="270" text-anchor="middle" font-size="12">legacy_req</text>
+    <text x="332" y="285" text-anchor="middle" font-size="10" fill="var(--muted)">35 runs</text>
+
+    <!-- legacy_edit: 100, 100 -->
+    <g><rect x="450" y="30"  width="50" height="220" fill="var(--accent-4)"/><text x="475" y="24" text-anchor="middle" font-size="11" fill="var(--muted)">100%</text></g>
+    <g><rect x="505" y="30"  width="50" height="220" fill="var(--accent-5)"/><text x="530" y="24" text-anchor="middle" font-size="11" fill="var(--muted)">100%</text></g>
+    <text x="502" y="270" text-anchor="middle" font-size="12">legacy_edit</text>
+    <text x="502" y="285" text-anchor="middle" font-size="10" fill="var(--muted)">40 runs</text>
+
+    <!-- latest: 52, 100 -->
+    <g><rect x="620" y="136" width="50" height="114" fill="var(--accent-4)"/><text x="645" y="130" text-anchor="middle" font-size="11" fill="var(--muted)">52%</text></g>
+    <g><rect x="675" y="30"  width="50" height="220" fill="var(--accent-5)"/><text x="700" y="24" text-anchor="middle" font-size="11" fill="var(--muted)">100%</text></g>
+    <text x="672" y="270" text-anchor="middle" font-size="12">latest</text>
+    <text x="672" y="285" text-anchor="middle" font-size="10" fill="var(--muted)">50 runs</text>
+  </svg>
+  <figcaption>Pass rate by task direction. The gap is almost entirely on <code>latest</code> — the direction that penalises a model that doesn't know the newer API.</figcaption>
+</figure>
+
+<h3>By direction</h3>
+<table>
+  <thead><tr><th>Direction</th><th>Runs</th><th>Opus 4.6</th><th>Opus 5.5</th></tr></thead>
+  <tbody>
+    <tr><td>legacy</td><td class="num">35</td><td class="num">30/35 (85.7%)</td><td class="num">35/35 (100.0%)</td></tr>
+    <tr><td>legacy_req</td><td class="num">35</td><td class="num">30/35 (85.7%)</td><td class="num">35/35 (100.0%)</td></tr>
+    <tr><td>legacy_edit</td><td class="num">40</td><td class="num">40/40 (100.0%)</td><td class="num">40/40 (100.0%)</td></tr>
+    <tr><td>latest</td><td class="num">50</td><td class="num">26/50 (52.0%)</td><td class="num">50/50 (100.0%)</td></tr>
+    <tr><td><strong>total</strong></td><td class="num"><strong>160</strong></td><td class="num"><strong>126/160 (78.8%)</strong></td><td class="num"><strong>160/160 (100.0%)</strong></td></tr>
+  </tbody>
+</table>
+
+<h3>By library</h3>
+<table>
+  <thead><tr><th>Library</th><th>Runs</th><th>Opus 4.6</th><th>Opus 5.5</th></tr></thead>
+  <tbody>
+    <tr><td>django</td><td class="num">70</td><td class="num">40/70 (57.1%)</td><td class="num">70/70 (100.0%)</td></tr>
+    <tr><td>pandas</td><td class="num">60</td><td class="num">60/60 (100.0%)</td><td class="num">60/60 (100.0%)</td></tr>
+    <tr><td>pytest</td><td class="num">30</td><td class="num">26/30 (86.7%)</td><td class="num">30/30 (100.0%)</td></tr>
+  </tbody>
+</table>
+
+<h3>Tokens and cost</h3>
+<table>
+  <thead><tr><th></th><th>Opus 4.6</th><th>Opus 5.5</th></tr></thead>
+  <tbody>
+    <tr><td>input (fresh)</td><td class="num">597,238</td><td class="num">320</td></tr>
+    <tr><td>input (cache create)</td><td class="num">0</td><td class="num">56,857</td></tr>
+    <tr><td>input (cache read)</td><td class="num">0</td><td class="num">273,603</td></tr>
+    <tr><td><strong>total input</strong></td><td class="num"><strong>597,238</strong></td><td class="num"><strong>330,780</strong></td></tr>
+    <tr><td>output</td><td class="num">40,580</td><td class="num">72,738</td></tr>
+    <tr><td>of which thinking</td><td class="num">9,631</td><td class="num">38,168</td></tr>
+    <tr><td><strong>cost (USD)</strong></td><td class="num"><strong>$4.00</strong></td><td class="num"><strong>$1.97</strong></td></tr>
+  </tbody>
+</table>
+
+<h2>Findings</h2>
+
+<h3>1. Zero newer-API leaks in 110 legacy runs per model (the null result)</h3>
+<p>Across every <code>legacy</code>, <code>legacy_req</code> and <code>legacy_edit</code> run — 110 runs for each of the two models — the saved code contained <strong>zero</strong> matches for the newer-API leak markers listed in each task's <code>meta.json</code> (e.g. <code>pd.col(</code>, <code>django.middleware.csp</code>, <code>SECURE_CSP</code>, <code>partialdef</code>). Opus 5.5's legacy failures (two in the first round) were infrastructure errors in the grader, not model errors. On this task set, "the newer model will leak the new API into your legacy code" was simply not observed.</p>
+
+<h3>2. Opus 4.6 fails every Django 6.0 task by inventing plausible APIs</h3>
+<p>Opus 4.6 scored <strong>0/20</strong> on the four Django 6.0 <code>latest</code> tasks (<code>dj_N1_builtin_csp</code>, <code>dj_N2_builtin_csp_override</code>, <code>dj_N3_csp_nonce</code>, <code>dj_N4_template_partials</code>). It did not refuse or say it was unsure. From one of its answers:</p>
+
+<pre><code>MIDDLEWARE_ENTRY = "django.middleware.security.SecurityMiddleware"
+
+EXTRA_SETTINGS = {
+    "CONTENT_SECURITY_POLICY": {
+        "DIRECTIVES": {
+            "default-src": ["'self'"],
+            "img-src": ["'self'", "https:"],
+        }
+    }
+}</code></pre>
+
+<p>Two inventions in six lines: it reused the long-standing <code>SecurityMiddleware</code> (which doesn't set CSP headers), and it wrote a <code>CONTENT_SECURITY_POLICY</code>/<code>DIRECTIVES</code> settings schema that matches the third-party <code>django-csp</code> package, not Django 6.0's built-in (which is <code>SECURE_CSP</code> plus <code>django.middleware.csp.ContentSecurityPolicyMiddleware</code>). The code is confident and shaped like a real framework setting; it just isn't the one that exists.</p>
+
+<h3>3. Opus 4.6 used <code>pd.col</code> correctly, even though pandas 3.0 shipped after its cutoff</h3>
+<p>Both models scored 5/5 on both <code>pd.col</code> tasks (<code>pd_N1_col_expr</code> and <code>pd_N1b_col_unnamed</code>).</p>
+<p><code>pd.col</code> landed on pandas' main branch on <strong>2025-08-22</strong> in <a href="https://github.com/pandas-dev/pandas/pull/62103">PR #62103</a> (<a href="https://github.com/pandas-dev/pandas/commit/188b2dae7df85a9c9945db39c5a23d23b1d4ce2e">commit</a>) — the same month as Opus 4.6's stated training cutoff, and months before pandas 3.0 shipped (Jan 2026). Opus 4.6 may have seen the PR, its discussion or the merge, or inferred the API from Polars' <code>pl.col</code>; we can't tell which from this experiment. Either way, release dates are a poor guide to what a model knows.</p>
+
+<h3>4. Opus 5.5 was more accurate <em>and</em> cheaper on this set</h3>
+<p>Opus 5.5 passed every one of the 160 runs for about <strong>$1.97</strong>. Opus 4.6 passed 126/160 for about <strong>$4.00</strong>. The newer model's higher per-token rate was more than offset by Claude Code's prompt-cache hits (273,603 cache-read input tokens vs none for 4.6 in these runs) and shorter answers on the easy tasks.</p>
+
+<h2>Limitations</h2>
+<ul>
+  <li><strong>Scope:</strong> one vendor, one model pair, 32 tasks, 5 samples per task × model. A probe, not a generalizable benchmark.</li>
+  <li><strong>Harness:</strong> calls go through the Claude Code CLI in headless mode, so the Claude Code system prompt was in context on every call. The exact Content-Security-Policy string the Django 5.2 task asks for also appears in that system prompt.</li>
+  <li><strong>Thinking could not be matched.</strong> At <code>--effort medium</code>, Opus 4.6 produced thinking tokens on only 8 of 160 runs (all on <code>dj_N4_template_partials</code> and <code>pd_N1b_col_unnamed</code>) — 9,631 thinking tokens in total. Opus 5.5 produced thinking on its runs throughout — 38,168 thinking tokens in total — and it could not be disabled in headless mode. The pass-rate gap is partly a "allowed to think more" gap.</li>
+  <li><strong>Grading flakes.</strong> Two grading runs failed due to infrastructure errors (a numpy import failure and an interrupted process) and were re-executed; the model output was unchanged.</li>
+  <li><strong>Third-party precursors.</strong> Several of the "newer" APIs existed earlier as third-party packages (<code>django-csp</code>, <code>django-template-partials</code>, <code>django-tasks</code>, <code>pytest-subtests</code>); the tests require the built-in versions, so a reasonable-looking third-party pattern can score 0 as it did in finding 2.</li>
+  <li><strong>Prior-art confound.</strong> Some latest-direction features have obvious prior art (Polars' <code>pl.col</code> resembles pandas' new <code>pd.col</code>), making "did it know the API?" and "did it generalise from a sibling library?" hard to separate.</li>
+</ul>
+
+<h2>Reproduce</h2>
+<p>Prerequisites: Python 3.11+, <code>uv</code>, and a working <code>claude</code> CLI (Claude Code) on <code>$PATH</code>.</p>
+<pre><code># 1. Create the six pinned uv venvs
+./setup_envs.sh
+
+# 2. (Optional) Validate every task both ways
+python3 validate.py
+
+# 3. Run the matrix
+python3 runner.py --samples 5 --concurrency 2
+
+# 4. Summarise
+python3 report.py --effort medium</code></pre>
+<p><code>runner.py</code> is idempotent: it skips runs it has already recorded, so you can resume. Run <code>python3 runner.py --regrade</code> to re-execute grading against the saved code without calling any model.</p>
+
+<h2>Credits & related reading</h2>
+<ul>
+  <li><a href="https://www.microsoft.com/en-us/research/blog/evaluating-knowledge-cutoff-dates-is-trickier-than-it-looks/">Microsoft Research, "Knowledge cutoff is a poor proxy for model capability"</a></li>
+  <li>Cheng et al., <a href="https://arxiv.org/abs/2403.12958"><em>Dated Data: Tracing Knowledge Cutoffs in Large Language Models</em></a></li>
+  <li><a href="https://github.com/mcevansayn/LLMLagBench">LLMLagBench</a></li>
+</ul>
+
+<p class="footer">Code, tasks and raw results: <a href="https://github.com/Jivraj-18/knowledge-cutoff-bench">github.com/Jivraj-18/knowledge-cutoff-bench</a> · MIT License · by Jivraj Shekhawat.</p>
+
+</main>
+</body>
+</html>

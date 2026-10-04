@@ -1,0 +1,96 @@
+{
+  "duration_api_ms": 40173,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.07508999999999999,
+  "usage": {
+    "input_tokens": 3763,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 2251,
+    "output_tokens_details": {
+      "thinking_tokens": 2028
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 3763,
+        "output_tokens": 2251,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-opus-4-6": {
+      "inputTokens": 3763,
+      "outputTokens": 2251,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.07508999999999999,
+      "contextWindow": 200000,
+      "maxOutputTokens": 64000,
+      "thinkingTokens": 2028,
+      "canonicalModel": "claude-opus-4-6",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "```python\nfrom django.template import Engine, Context\n\nTEMPLATE_STRING = (\n    \"{% partialdef card inline=False %}\"\n    '<div class=\"card\">{{ item }}</div>'\n    \"{% endpartialdef %}\"\n    \"F:{% for item in featured %}{% partial card %}{% endfor %}\"\n    \"|O:{% for item in others %}{% partial card %}{% endfor %}\"\n)\n\n_engine = Engine(loaders=[\n    ('django.template.loaders.locmem.Loader', {'cards': TEMPLATE_STRING}),\n])\n\n\ndef render_cards(featured, others):\n    template = _engine.get_template('cards')\n    return template.render(Context({'featured': featured, 'others': others}))\n\n\ndef render_card(item):\n    template = _engine.get_template('cards#card')\n    return template.render(Context({'item': item}))\n```",
+  "ttft_ms": 38456,
+  "type": "result",
+  "duration_ms": 40222,
+  "ttft_stream_ms": 2264,
+  "time_to_request_ms": 54,
+  "first_content_frame_ms": 2264,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

@@ -1,0 +1,10 @@
+{
+ "id": "pd_N2_inplace_flag",
+ "library": "pandas",
+ "pinned_version": "3.0.6",
+ "env": "pandas_new",
+ "direction": "latest",
+ "change_id": "pandas-cow",
+ "source_url": "https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/source/whatsnew/v3.0.0.rst",
+ "leak_markers": []
+}

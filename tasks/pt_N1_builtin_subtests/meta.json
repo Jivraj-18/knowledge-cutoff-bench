@@ -1,0 +1,10 @@
+{
+ "id": "pt_N1_builtin_subtests",
+ "library": "pytest",
+ "pinned_version": "9.0.3",
+ "env": "pytest_new",
+ "direction": "latest",
+ "change_id": "pytest-subtests",
+ "source_url": "https://raw.githubusercontent.com/pytest-dev/pytest/main/doc/en/changelog.rst",
+ "leak_markers": []
+}

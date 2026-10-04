@@ -1,0 +1,13 @@
+{
+ "id": "pt_R1_independent_cases",
+ "library": "pytest",
+ "pinned_version": "8.4.2",
+ "env": "pytest_old",
+ "direction": "legacy_req",
+ "change_id": "pytest-subtests",
+ "source_url": "https://raw.githubusercontent.com/pytest-dev/pytest/main/doc/en/changelog.rst",
+ "leak_markers": [
+  "subtests"
+ ],
+ "variant_of": "pt_L1_independent_cases"
+}

@@ -1,0 +1,96 @@
+{
+  "duration_api_ms": 8683,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.0198668,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 189,
+    "cache_read_input_tokens": 1934,
+    "output_tokens": 898,
+    "output_tokens_details": {
+      "thinking_tokens": 382
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 189,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 898,
+        "cache_read_input_tokens": 1934,
+        "cache_creation_input_tokens": 189,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 189
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-opus-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 898,
+      "cacheReadInputTokens": 1934,
+      "cacheCreationInputTokens": 189,
+      "webSearchRequests": 0,
+      "costUSD": 0.0198668,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 382,
+      "canonicalModel": "claude-opus-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "```python\n\"\"\"Content-Security-Policy middleware and the ``embed`` view.\"\"\"\n\nfrom django.http import HttpResponse\nfrom django.utils.deprecation import MiddlewareMixin\n\nCSP_HEADER = \"Content-Security-Policy\"\nDEFAULT_POLICY = \"default-src 'self'; img-src 'self' https:\"\nEMBED_POLICY = \"default-src 'self'; frame-ancestors *\"\n\n# Attribute set on a response to carry a view-specific policy that the\n# middleware must apply instead of the default one.\n_POLICY_ATTR = \"_csp_policy_override\"\n\n\nclass CSPMiddleware(MiddlewareMixin):\n    \"\"\"Set the Content-Security-Policy header on every response.\n\n    The default policy is always applied, replacing any policy set elsewhere,\n    unless the response was explicitly marked with a per-view override.\n    MiddlewareMixin makes this work for both sync and async request stacks.\n    \"\"\"\n\n    def process_response(self, request, response):\n        policy = getattr(response, _POLICY_ATTR, None) or DEFAULT_POLICY\n        response[CSP_HEADER] = policy\n        return response\n\n\nMIDDLEWARE_ENTRY = f\"{__name__}.CSPMiddleware\"\n\nEXTRA_SETTINGS = {}\n\n\ndef embed(request):\n    response = HttpResponse(\"embed\")\n    response[CSP_HEADER] = EMBED_POLICY\n    setattr(response, _POLICY_ATTR, EMBED_POLICY)\n    return response\n```",
+  "ttft_ms": 5078,
+  "type": "result",
+  "duration_ms": 8719,
+  "ttft_stream_ms": 1356,
+  "time_to_request_ms": 38,
+  "first_content_frame_ms": 1356,
+  "queued_turn_count": 0,
+  "result_index": 0
+}
